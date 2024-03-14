@@ -1,2 +1,2 @@
-# VCT_match_predictior
+# VCT_match_predictor
 VCT pro esports match prediction bot
