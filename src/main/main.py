@@ -4,9 +4,7 @@ import requests
 import json
 import pandas as pd
 
-# Basic team data of all VCT teams
-all_teams = requests.get("https://vlr.orlandomm.net/api/v1/teams?region=all")
-
+# Function to check request and return json data
 def get_json_data(response):
     # Check if the request was successful
     if response.status_code == 200:
@@ -17,5 +15,13 @@ def get_json_data(response):
     # Returns json data
     return json_data
 
-test = get_json_data(all_teams)
-print(type(test))
+def get_team_id(team_name):
+    
+
+# Basic team data of all VCT teams
+all_teams = requests.get("https://vlr.orlandomm.net/api/v1/teams?limit=4")
+
+# Gets json data and converts to pandas dataframe
+json_data = pd.DataFrame(get_json_data(all_teams)["data"])
+
+print(json_data["name"][0]) 
