@@ -3,26 +3,10 @@
 # Imports requests, json, and pandas module (Needs to be installed through pip3)
 import requests
 import json
+import os
 import pandas as pd
+import file_paths
+from api_modules.obtain_match_results import fetch_match_results
 
-# Function to check if request is valid and returns json data
-def get_json_data(response):
-    # Check if the request was successful
-    if response.status_code == 200:
-        json_data = response.json()
-    else:
-        print('Failed to retrieve data from the API')
-        json_data = None
-    # Returns json data
-    return json_data
-
-def get_team_id(team_name):
-    a = 'a'
-
-# Basic team data of all VCT teams
-all_teams = requests.get('https://vlr.orlandomm.net/api/v1/teams?limit=4')
-
-# Gets json data and converts to pandas dataframe
-json_data = pd.DataFrame(get_json_data(all_teams)['data'])
-
-print(json_data['name'][0]) 
+match_results_df = fetch_match_results()
+match_results_df.to_csv(file_paths.api_match_results, index=False)

@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
 
-# Function to take match data from vlr and return it as list
+# Function to take match data from vlr and return it as list, and returns the processed match id
 def get_match_data(match_id):
+    processed_match_id = match_id
+    # Send a request to the specified URL
     url = f'https://www.vlr.gg/{match_id}'
     page = requests.get(url)
 
@@ -16,20 +18,19 @@ def get_match_data(match_id):
     # =================
     # TEAM RELATED DATA
     # =================
-    
-    # Gets top header from vlr match result page
-    match_header_vs = soup.find('div', class_ = 'match-header-vs')
 
-    # Gets 2 team names html, strips html tags and assigns each team name as to a list
-    team_name_html = match_header_vs.find_all('div', class_ = 'wf-title-med')
+    # Extracts team names
+    team_name_html = soup.find_all('div', class_ = 'wf-title-med')
     team_names = [names.text.strip() for names in team_name_html]
 
-    # Gets score html, 
-    match_score_html = match_header_vs.find('div', class_ = 'js-spoiler')
-    match_score = match_score_html.find_all('span')
+    # Extracts match score
+    match_score_html = (soup.find('div', class_ = 'js-spoiler')).find_all('span')
+    match_score = [score.text.strip() for score in match_score_html]
+    match_score.remove(':')
 
+    # Extracts maps played
 
-    team_vetoes = match_header_vs
+    team_vetoes = soup
     print(team_names)
     print(match_score)
     
@@ -38,6 +39,7 @@ def get_match_data(match_id):
     print(soup)
     """
 
-# Test match id: 318919 (Team Vitality Vs Team Heretics, Wednesday, April 10th, 11:10 AM PDT)
+# Test match id: 318919 (VIT VS TH, Wednesday, April 10th, 11:10 AM PDT)
+# 314625 (SEN VS 100T)
         
 get_match_data(318919)
