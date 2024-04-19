@@ -8,16 +8,14 @@ The project is organized into the following directories:
 
 - **data/**: Contains all data files, including raw data scraped from vlr.gg and data obtained from the Valorant API.
 - **src/**: Contains Python source code files for scraping data, data preprocessing, model training, and prediction.
-- **notebooks/**: Contains Jupyter notebooks for exploratory data analysis, model development, and visualization.
 
 ## Components
 The main components of the project include:
 
 - **Data Scraping**: Python scripts (`vlr_scraper.py`, `api.py`) for scraping match data from vlr.gg and fetching data from the Valorant API.
-- **Data Processing**: Python script (`data_processing.py`) for preprocessing and cleaning the collected data.
-- **Model Training**: Python script (`model_training.py`) for training machine learning models using the preprocessed data.
-- **Prediction**: Python script (`prediction.py`) for making predictions using the trained models.
-- **Notebooks**: Jupyter notebooks (`exploratory_data_analysis.ipynb`, `model_development.ipynb`, `visualization.ipynb`) for conducting exploratory data analysis, developing prediction models, and visualizing results.
+- **Data Processing**: Python script (`data_processing.py`) for preprocessing and cleaning the collected data.  (NOT A FEATURE YET)
+- **Model Training**: Python script (`model_training.py`) for training machine learning models using the preprocessed data.  (NOT A FEATURE YET)
+- **Prediction**: Python script (`prediction.py`) for making predictions using the trained models.  (NOT A FEATURE YET)
 
 ## Getting Started
 To set up the project, follow these steps:
@@ -33,11 +31,9 @@ To set up the project, follow these steps:
 ## Dependencies
 The project requires the following dependencies:
 
-- Python 3.x
+- Python 3.12.2
 - BeautifulSoup
 - Pandas
 - Scikit-learn
-- Matplotlib
-- Seaborn
 
 You can install the dependencies using pip:
