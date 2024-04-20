@@ -41,12 +41,13 @@ pip install -r requirements.txt
 The project requires the following dependencies:
 
 - Python 3.12.2
+- pip
 - Git
 - BeautifulSoup
 - Pandas
 - Scikit-learn
 
-You can install the dependencies using pip:
+You can install the python libraries using pip or pip3:
 
 ```bash
 pip install -r requirements.txt
