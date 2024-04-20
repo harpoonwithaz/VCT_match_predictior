@@ -1,27 +1,7 @@
 import requests
 import pandas as pd
-import os
 import file_paths
-
-# Function to check if request is valid and returns json data
-def get_json_data(response):
-    """
-    Extracts JSON data from the response if the request was successful.
-
-    Args:
-    response: The response object from the API request.
-
-    Returns:
-    JSON data if the request was successful, otherwise None.
-    """
-    # Check if the request was successful
-    if response.status_code == 200:
-        json_data = response.json()
-    else:
-        print('Failed to retrieve data from the API')
-        json_data = None
-    # Returns json data
-    return json_data
+from api_modules import check_json
 
 # Function to fetch match results from api, and return results as dataframe
 def fetch_match_results():
@@ -59,7 +39,7 @@ def fetch_match_results():
         all_results = requests.get(f'https://vlr.orlandomm.net/api/v1/results?page={page_number + 493}')
 
         # Gets json data
-        json_data = get_json_data(all_results)
+        json_data = check_json.get_json_data(all_results)
 
         # Checks if there is no data, breaks for loop
         if json_data['size'] == 0:
@@ -79,7 +59,7 @@ def fetch_match_results():
                     break
                 else:
                     records_amount += 1
-                    # Appends current row to api data
+                    # Appends current row to api dataframe
                     api_data = api_data._append(match_data.loc[row_index])
             
             if break_out:

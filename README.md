@@ -37,3 +37,7 @@ The project requires the following dependencies:
 - Scikit-learn
 
 You can install the dependencies using pip:
+```bash
+pip install -r requirements.txt
+```
+This command will install all the required packages listed in the requirements.txt file. Make sure to run this command in your project's virtual environment or add the --user flag to install the packages globally.
