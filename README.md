@@ -1,7 +1,7 @@
 # Valorant Prediction Algorithm
 
 # Overview
-The Valorant Prediction Algorithm project aims to develop a predictive model for predicting the outcomes of Valorant esports matches. The prediction model utilizes data collected from various sources, including the vlr.gg website and the **vlresports - Valorant Esports API** by __Orloxx23__. This README.md file provides an overview of the project structure, components, and instructions for getting started.
+The Valorant Prediction Algorithm project aims to develop a predictive model for predicting the outcomes of Valorant esports matches. The prediction model utilizes data collected from various sources, including the vlr.gg website and the <a href="https://github.com/Orloxx23/vlresports">vlresports - Valorant Esports API</a> by <a href="https://github.com/Orloxx23">__Orloxx23__</a>. This README.md file provides an overview of the project structure, components, and instructions for getting started.
 
 # Project Structure
 The project is organized into the following directories:
