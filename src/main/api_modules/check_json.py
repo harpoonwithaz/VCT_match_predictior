@@ -15,5 +15,6 @@ def get_json_data(response):
     else:
         print('Failed to retrieve data from the API')
         json_data = None
+        
     # Returns json data
     return json_data

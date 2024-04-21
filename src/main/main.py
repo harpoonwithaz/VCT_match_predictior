@@ -1,12 +1,21 @@
 # VCT match outcome prediction algorithm
 
 # Imports requests, json, and pandas module (Needs to be installed through pip3)
-import requests
-import json
-import os
 import pandas as pd
 import file_paths
-from api_modules.obtain_match_results import fetch_match_results
+from api_modules import obtain_api_data
 
-match_results_df = fetch_match_results()
-match_results_df.to_csv(file_paths.api_match_results, index=False)
+#match_results_df = obtain_api_data.fetch_match_results()
+#match_results_df.to_csv(file_paths.api_match_results, index=False)
+
+#all_teams = obtain_api_data.fetch_all_teams()
+
+# 2593 | Test team ID (Fnatic)
+#team_data = obtain_api_data.fetch_team(2593)
+#print(team_data)
+
+#all_players = obtain_api_data.fetch_all_players()
+#print(all_players)
+
+#
+#player_data = obtain_api_data.fetch_player()
