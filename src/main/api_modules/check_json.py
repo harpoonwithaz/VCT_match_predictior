@@ -13,7 +13,7 @@ def get_json_data(response):
     if response.status_code == 200:
         json_data = response.json()
     else:
-        print('Failed to retrieve data from the API')
+        print('Error message:', ((response.json())['message'])['message'])
         json_data = None
         
     # Returns json data

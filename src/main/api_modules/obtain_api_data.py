@@ -85,9 +85,12 @@ def fetch_match_results():
     return df
 
 # Function to get all VCT teams basic info from api, and return them as dataframe
-def fetch_all_teams(region: str = "all"):
+def fetch_all_teams(regions: list = ['eu', 'na', 'br', 'ap', 'kr', 'ch', 'jp', 'las', 'lan', 'oce', 'mena', 'gc']):
     """
     Fetches all VCT teams basic info from API and returns them as a dataframe.
+
+    Parameters:
+    regions (list): List of specific regions.
 
     Returns:
     A dataframe containing all VCT teams basic info.
@@ -101,15 +104,26 @@ def fetch_all_teams(region: str = "all"):
     # Creates new data frame for all teams
     df = pd.DataFrame(columns = df_columns)
 
-    # Makes a request to the API
-    all_teams = requests.get(f'https://vlr.orlandomm.net/api/v1/teams?limit=all&region={region}')
-    
-    # Gets json data
-    json_data = check_json.get_json_data(all_teams)
-
-    # Appends json data to df and returns it
-    df = df._append(json_data['data'])
+    for region in regions:
+        print('Region:', region)
+        # Makes a request to the API
+        all_teams = requests.get(f'https://vlr.orlandomm.net/api/v1/teams?limit=all&region={region}')
         
+        # Gets json data
+        json_data = check_json.get_json_data(all_teams)
+
+        # Breaks loop if there is no data
+        if json_data == None:
+            df = None
+            break
+        else:
+            # Appends json data to df if data isn't empty
+            df = df._append(json_data['data'])
+            
+            # Reset index to add region rankings as a column
+            df.reset_index(inplace = True)
+            df.rename(columns = {'index': 'rank'}, inplace = True)
+    
     # Record the end time, calculates execution time and prints it
     end_time = time.time()
     execution_time = end_time - start_time
@@ -143,8 +157,12 @@ def fetch_team(team_id: int):
     # Gets json data
     json_data = check_json.get_json_data(team_data)
 
-    # Appends json data to df and returns it
-    df = df._append(json_data['data'], ignore_index=True)
+    if json_data == None:
+        print('Could not find this team. Team id:', team_id)
+        df = None
+    else:
+        # Appends json data to df and returns it
+        df = df._append(json_data['data'], ignore_index=True)
     
     # Record the end time, calculates execution time and prints it
     end_time = time.time()
@@ -168,35 +186,16 @@ def fetch_all_players(result_limit = None,
     Fetches all players teams basic info from API and returns them as a dataframe.
 
     Parameters (Args not required):
-    result_limit (int/str): Limit of results per page. You can also use all to get all players. If no args given, sets to 10 results.
-        This parameter represents the limit of results per page (Ex. all, 10, 15, 34, etc.) which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    event_series_id (int): Specific ID of event series. If no args given, sets to all events.
-        This parameter represents the event series (Ex. Valorant Champions Tour 2024, Valorant Game Changers 2024, etc.) unique ID which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    specific_event_id (int): Specific ID of specific event in the event series. If no args given, sets to all event series.
-        This parameter represents the specific event in the event series (Ex. Champions Tour 2024: Americas Kickoff, Champions Tour 2024: Masters Madrid, etc.) unique ID which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    region (str): 2/3 letter abbreviation for players region. If no args given, sets to all regions. CURRENTLY NOT WORKING
-        This parameter represents the 2/3 letter abbreviation for players region (Ex. na, eu, oce, etc.) which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    country (str): 2/3 letter abbreviation for players country. If no args given, sets to all countries.
-        This parameter represents the 2/3 letter abbreviation for players country (Ex. ca, us, etc.) which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    min_rounds (int): Minimum rounds player played. By default is set to 0.
-        This parameter represents the minimum rounds a player has played which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    min_rating (int): Minimum rating of player. By default is set to 0.
-        This parameter represents the minimum rating a player has which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    agent (str): Specific agent. If no args given, sets to all agents.
-        This parameter represents one agent (Ex. jett, astra, etc.) a player has played which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    map_id (int): Specific id of certain map. If no args given, sets to all maps.
-        This parameter represents the stats of a certain player on a certain map (Ex. split, bind, etc.) unique ID which is passed to the URL to make a call to the api containing the data with that parameter.
-
-    time_span (str): Time period. If no args given, sets to 60d.
-        This parameter represents the time period of players stats (Ex. all, 30d, 60d, etc.) which is passed to the URL to make a call to the api containing the data with that parameter.
+    - result_limit (int/str): Limit of results per page. (Ex. all, 10, 15, 34, etc.) You can also use all to get all players. If no args given, sets to 10 results.
+    - event_series_id (int): Specific ID of event series (Ex. Valorant Champions Tour 2024, Valorant Game Changers 2024, etc.)If no args given, sets to all events.
+    - specific_event_id (int): Specific ID of specific event (Ex. Champions Tour 2024: Americas Kickoff, Champions Tour 2024: Masters Madrid, etc.) in the event series. If no args given, sets to all event series.
+    - region (str): 2/3 letter abbreviation for players region (Ex. na, eu, oce, etc.). If no args given, sets to all regions. CURRENTLY NOT WORKING
+    - country (str): 2/3 letter abbreviation for players country (Ex. ca, us, etc.). If no args given, sets to all countries.
+    - min_rounds (int): Minimum rounds player played. By default is set to 0.
+    - min_rating (int): Minimum rating of player. By default is set to 0.
+    - agent (str): Specific agent (Ex. jett, astra, etc.). If no args given, sets to all agents.
+    - map_id (int): Specific id of certain map. If no args given, sets to all maps.
+    - time_span (str): Time period (Ex. all, 30d, 60d, 90d). If no args given, sets to 60d.
 
     Returns:
     A dataframe containing all players data with specific parameter.
@@ -289,13 +288,13 @@ def fetch_player(player_id: int):
     return df
 
 # Function to get details on events from api and return is as a dataframe
-def fetch_all_events(event_status : str = None, event_region : str = None):
+def fetch_all_events(event_status: str = None, event_region: str = None):
     """
     Fetches details about valorant events from API and returns them as a dataframe.
 
     Parameters:
-    event_status (int): Filters events by their status. 
-        This parameter represents the events status (ongoing, upcoming, completed, all) which is passed to the URL to make a call to the api containing the players specific data.
+    - event_status (str): Filters events by their status. (ongoing, upcoming, completed, all)
+    - event_region (str): Filters events by region (na, eu, etc.)
 
     Returns:
     A dataframe containing details on valorant events.
